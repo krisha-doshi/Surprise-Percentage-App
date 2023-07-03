@@ -69,13 +69,6 @@ Data is collected from:
 3. Surprise Earning Percentage: https://www.alphavantage.co/query?function=EARNINGS&symbol={tickerSymbol}&apikey=5TO1LWG9QMERUK3S
 """)
             
-st.sidebar.header("User Input Features")
-number = st.sidebar.selectbox("Ranking Based on Top", list(range(1,len(df)+1)))
-criteria = st.sidebar.selectbox(list("Estimated Earnings Percentage", "Surprise Percentage"))
-if criteria == "Estimated Earnings Percentage":
-    df.sort_values(by = "Estimated Earnings Percentage", ascending = False )
-elif criteria == "Surprise Percentage":
-    df.sort_values(by = "Surprise Percentage", ascending = False )
 
 st.markdown("The following tickers could not be found on YahooFinance and may have been delisted:")
 st.markdown(missingtickers)
@@ -86,4 +79,4 @@ st.markdown(missingvalues)
 st.markdown("The following tickers have no quarterly earnings listed")
 st.markdown(missingquarterlydata)
 
-AgGrid(df[1:number+1])
+AgGrid(df)

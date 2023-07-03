@@ -74,9 +74,9 @@ number = st.sidebar.selectbox("Ranking Based on Top", list(range(1,len(df)+1)))
 criteriaoptions = ["Estimated Earnings Percentage", "Surprise Percentage"]
 criteria = st.sidebar.selectbox("Criteria", criteriaoptions)
 if criteria == "Estimated Earnings Percentage":
-    df.sort_values(by = "Estimated Earnings Percentage", ascending = False )
+    df.sort_values(by = "Estimated Earnings Percentage", ascending = False, inplace = True)
 elif criteria == "Surprise Percentage":
-    df.sort_values(by = "Surprise Percentage", ascending = False )
+    df.sort_values(by = "Surprise Percentage", ascending = False, inplace = True )
 
 # st.markdown("The following tickers could not be found on YahooFinance and may have been delisted:")
 # st.markdown(missingtickers)

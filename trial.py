@@ -3,6 +3,7 @@ import yfinance as yf
 import csv
 import requests
 import pandas as pd
+import time
 from st_aggrid import AgGrid
 
 @st.cache_data
@@ -16,7 +17,7 @@ def load_data(CSV_URL):
         missingvalues = []
         finallist = []
         missingquarterlydata = []
-        for row in companies[:100]:
+        for row in companies:
             if row[5] != 'USD':
                 continue
             else: 
@@ -44,7 +45,20 @@ def load_data(CSV_URL):
                             row.append(surprisepercentage)
                             finallist.append(row)
                         except:
-                            missingquarterlydata.append(tickerSymbol)
+                            try:
+                                error = data['Note']
+                                url = f'https://www.alphavantage.co/query?function=EARNINGS&symbol={tickerSymbol}&apikey=YCZL8A385TIETXH8'
+                                r = requests.get(url)
+                                data = r.json()
+                                quarterlydata = data['quarterlyEarnings']
+                                latestdata = quarterlydata[0]
+                                latestreported = latestdata['reportedDate']
+                                surprisepercentage = float(latestdata['surprisePercentage'])
+                                row.append(latestreported)
+                                row.append(surprisepercentage)
+                                finallist.append(row)
+                            except:    
+                                missingquarterlydata.append(tickerSymbol)
                     except:
                         missingtickers.append(tickerSymbol)
                 except ValueError:
@@ -61,7 +75,7 @@ df, missingvalues, missingtickers, missingquarterlydata = load_data(CSV_URL)
 st.title("Estimated and Surprise Earning Percentage App")
 
 st.markdown("""
-This app ranks the top n number of US listed companies in terms of Estimated and Surprise Earning Percentage.
+This app ranks the top n number of US listed companies based on Estimated and Surprise Earning Percentage.
 The Estimated Earning Percentage is calculated using the Estimated Earnings divided by Current Share Price.
 Data is collected from: 
 1. Estimated Earnings per Share: https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey=5TO1LWG9QMERUK3S 
@@ -87,4 +101,5 @@ st.markdown(missingvalues)
 st.markdown("The following tickers have no quarterly earnings listed")
 st.markdown(missingquarterlydata)
 
+st.subheader(f"Table of Tickers with Top {number} Companies with Highest{criteria} Ranked ")
 AgGrid(df[1:number+1])

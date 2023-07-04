@@ -16,7 +16,7 @@ def load_data(CSV_URL):
         missingvalues = []
         finallist = []
         missingquarterlydata = []
-        for row in companies[:100]:
+        for row in companies:
             if row[5] != 'USD':
                 continue
             else: 

@@ -54,10 +54,10 @@ def load_data(CSV_URL):
         header = ["Symbol", "Company", "Next Reporting Date", "Estimated Earnings Percentage", "Latest Reporting Date", "Surprise Percentage"]
         df = pd.DataFrame(finallist, columns=header)
 
-        return df
+        return df, missingvalues, missingtickers, missingquarterlydata
 
 CSV_URL = 'https://www.alphavantage.co/query?function=EARNINGS_CALENDAR&horizon=3month&apikey=5TO1LWG9QMERUK3S'
-df = load_data(CSV_URL)
+df, missingvalues, missingtickers, missingquarterlydata = load_data(CSV_URL)
 st.title("Estimated and Surprise Earning Percentage App")
 
 st.markdown("""
@@ -70,7 +70,7 @@ Data is collected from:
 """)
             
 st.sidebar.header("User Input Features")
-number = st.sidebar.selectbox("Ranking Based on Top", list(range(1,len(df)+1)))
+number = st.sidebar.selectbox("Ranking Based on Top", list(reversed(range(1,len(df)+1))))
 criteriaoptions = ["Estimated Earnings Percentage", "Surprise Percentage"]
 criteria = st.sidebar.selectbox("Criteria", criteriaoptions)
 if criteria == "Estimated Earnings Percentage":
@@ -78,13 +78,13 @@ if criteria == "Estimated Earnings Percentage":
 elif criteria == "Surprise Percentage":
     df.sort_values(by = "Surprise Percentage", ascending = False, inplace = True )
 
-# st.markdown("The following tickers could not be found on YahooFinance and may have been delisted:")
-# st.markdown(missingtickers)
+st.markdown("The following tickers could not be found on YahooFinance and may have been delisted:")
+st.markdown(missingtickers)
 
-# st.markdown("The following tickers have no estimated earnings listed")
-# st.markdown(missingvalues)
+st.markdown("The following tickers have no estimated earnings listed")
+st.markdown(missingvalues)
 
-# st.markdown("The following tickers have no quarterly earnings listed")
-# st.markdown(missingquarterlydata)
+st.markdown("The following tickers have no quarterly earnings listed")
+st.markdown(missingquarterlydata)
 
 AgGrid(df[1:number+1])

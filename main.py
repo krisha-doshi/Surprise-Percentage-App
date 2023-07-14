@@ -19,7 +19,7 @@ def get_data(url):
 
 keys = ["5TO1LWG9QMERUK3S", "YCZL8A385TIETXH8", "UDDPGI2OD5ZCE3XM", "9FP3024TWMWXAZUK", "JSKI1K4SDKDAFTM7", "TZOR3BHNX5KDHPI7", "K6M8QX9ET7BC6BQY", "DT3F91MQ8YQ2OZA5",
 "MJHHMVIVN78KNE3S", "GAB8U42951A9240U",  "Y5PIVYW8480EF4KD", "3L3IT72L1N6HCJHX", "XMN8AKGRWB5PFDSC", "JT2M4TFYTQ3HQ17K", "N4OCLJFH7JG6L41R", "78X2RG0DZ8338BX0",
-"9690NSYZL347GGZ2", "QYX25OJG88FQTMEV", "ZL9CMLKWNI7I9MTO"]
+"9690NSYZL347GGZ2", "QYX25OJG88FQTMEV", "ZL9CMLKWNI7I9MTO", "TDCVI3YBES4FK4KV", "RWEMPD8FLUDCXIJU", "7FDGLCJKRW3EFSYV"]
 
 @st.cache_data
 def load_data(keys, CSV_URL):
@@ -109,5 +109,5 @@ st.markdown(missingvalues)
 st.markdown("The following tickers have no quarterly earnings listed")
 st.markdown(missingquarterlydata)
 
-st.subheader(f"Table of Tickers with Top {number} Companies with Highest{criteria} Ranked ")
+st.subheader(f"Table of Tickers with Top {number} Companies with Highest {criteria} Ranked ")
 AgGrid(df[1:number+1])
